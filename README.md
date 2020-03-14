@@ -63,7 +63,6 @@ I chose to make the server compatible with version 7.0 because I feel that it is
 - [x] Fix containers
 - [x] Don't play sound FX and music in the background if they are disabled (helps performance)
 - [x] Fix up good vault/nexus maps
-- [x] Add DungeonGen
 - [x] Remove LootDrop, LootTier & XpBooster boosters
 - [x] Add handlers for locking/ignoring
 - [x] Refine /app/globalNews
@@ -71,6 +70,7 @@ I chose to make the server compatible with version 7.0 because I feel that it is
 - [x] Fix condition effects
 - [x] Remove packet priority (everything should be sent logically, no priorities needed)
 - [x] Make particles render in a static way (only try to update texture on update, not every frame, performance boost)
+<<<<<<< HEAD
 - [x] Make it possible to control char slot currency through server (XML tag)
 - [x] Make dialogs/result packets nicer to work with (e.g. merchant dialogs) - added FlexibleDialog.as
 - [x] Fix up connecting bugs and remove NR con queue
@@ -127,6 +127,19 @@ I chose to make the server compatible with version 7.0 because I feel that it is
 - [ ] Add Oryx's Chamber
 - [ ] Add Wine Cellar
 - [ ] Add Cave of a Thousand Treasures
+=======
+- [ ] Make it possible to control char slot currency through server (XML tag)
+- [ ] Make dialogs/result packets nicer to work with (e.g. merchant dialogs)
+- [ ] Fix up connecting bugs and remove NR con queue
+- [ ] Fix map editor testing & visual bugs
+- [ ] Fix cloak (& possibly others) tooltip not working when they are equipped
+- [ ] Fix client loading up wrong character (causes skin view to bug out (and dyes/skin))
+- [ ] Fix reskin in game UI bugging out
+- [ ] Fix dye merchants not showing the look of the dye 
+- [ ] Fix weird particle rendering in AS3 client
+- [ ] Remove gifts completely (really want this source to be barebones!)
+- [ ] Fix small network latency even on localhost (Tasks are bad.)
+>>>>>>> parent of 0e08923... Remove gifts and fix some bugs
 
 If you find a problem in the source, feel free to open an issue [here](https://github.com/moistosaurus/realm-src/issues).
 

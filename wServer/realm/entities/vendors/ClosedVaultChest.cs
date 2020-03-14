@@ -15,7 +15,7 @@ namespace wServer.realm.entities.vendors
 
         public override void Buy(Player player)
         {
-            var result = ValidateCustomer(player, null);
+            var result = ValidateCustomer(player);
             if (result != BuyResult.Ok)
             {
                 SendFailed(player, result);

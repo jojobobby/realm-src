@@ -171,28 +171,42 @@ namespace wServer.realm.entities
                             cInv[slot] = successor;
                         }
 
-                        if (!Inventory.Execute(cInv)) // can result in the loss of an item if inv trans fails...
+                        var trans = db.Conn.CreateTransaction();
+                        if (container is GiftChest)
+                            if (successor != null)
+                                db.SwapGift(Client.Account, item.ObjectType, successor.ObjectType, trans);
+                            else
+                                db.RemoveGift(Client.Account, item.ObjectType, trans);
+                        var task = trans.ExecuteAsync();
+                        task.ContinueWith(t =>
                         {
-                            entity.ForceUpdate(slot);
-                            return;
-                        }
-
-                        if (slotType > 0)
-                        {
-                            FameCounter.UseAbility();
-                        }
-                        else
-                        {
-                            if (item.ActivateEffects.Any(eff => eff.Effect == ActivateEffects.Heal ||
-                                                                eff.Effect == ActivateEffects.HealNova ||
-                                                                eff.Effect == ActivateEffects.Magic ||
-                                                                eff.Effect == ActivateEffects.MagicNova))
+                            var success = !t.IsCanceled && t.Result;
+                            if (!success || !Inventory.Execute(cInv)) // can result in the loss of an item if inv trans fails...
                             {
-                                FameCounter.DrinkPot();
+                                entity.ForceUpdate(slot);
+                                return;
                             }
-                        }
 
-                        Activate(time, item, pos);
+                            if (slotType > 0)
+                            {
+                                FameCounter.UseAbility();
+                            }
+                            else
+                            {
+                                if (item.ActivateEffects.Any(eff => eff.Effect == ActivateEffects.Heal ||
+                                                                    eff.Effect == ActivateEffects.HealNova ||
+                                                                    eff.Effect == ActivateEffects.Magic ||
+                                                                    eff.Effect == ActivateEffects.MagicNova))
+                                {
+                                    FameCounter.DrinkPot();
+                                }
+                            }
+
+                            Activate(time, item, pos);
+                        });
+                        task.ContinueWith(e =>
+                            Log.Error(e.Exception.InnerException.ToString()),
+                            TaskContinuationOptions.OnlyOnFaulted);
                         return;
                     }
 
